@@ -42,7 +42,7 @@ FusionEKF::FusionEKF() {
   Q_ = MatrixXd(4, 4);
   P_ = MatrixXd(4, 4);
 
-  // Masurement matrix
+  // Measurement matrix
   H_laser_ << 1, 0, 0, 0,
             0, 1, 0, 0;
 
@@ -77,7 +77,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 
     cout << "EKF: " << endl;
 
-    // Initialze State Covariance Matrix P
+    // Initialize State Covariance Matrix P
     P_ << 1, 0, 0, 0,
           0, 1, 0, 0,
           0, 0, 1000, 0,
