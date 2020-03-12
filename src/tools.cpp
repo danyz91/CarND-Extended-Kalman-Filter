@@ -1,3 +1,5 @@
+// Copyright 2020 d.romano991@gmail.com
+
 #include "tools.h"
 #include <iostream>
 
@@ -14,7 +16,7 @@ VectorXd Tools::CalculateRMSE(const vector<VectorXd> &estimations,
     const vector<VectorXd> &ground_truth) {
 
   VectorXd rmse(4);
-  rmse << 0,0,0,0;
+  rmse << 0, 0, 0, 0;
 
   // Checking the validity of the following inputs:
   //  * the estimation vector size should not be zero
@@ -27,7 +29,6 @@ VectorXd Tools::CalculateRMSE(const vector<VectorXd> &estimations,
 
   // accumulate squared residuals
   for (unsigned int i=0; i < estimations.size(); ++i) {
-
     VectorXd residual = estimations[i] - ground_truth[i];
 
     // coefficient-wise multiplication
@@ -46,9 +47,8 @@ VectorXd Tools::CalculateRMSE(const vector<VectorXd> &estimations,
 }
 
 MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
-
-  MatrixXd Hj(3,4);
-  Hj = MatrixXd::Zero(3,4);
+  MatrixXd Hj(3, 4);
+  Hj = MatrixXd::Zero(3, 4);
 
   // Recover state parameters
   float px = x_state(0);
@@ -62,14 +62,14 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
   float c3 = (c1*c2);
 
   // check division by zero of all denominators in Hj formula
-  if (fabs(c1) < std::numeric_limits<float>::epsilon() ) {
+  if (fabs(c1) < std::numeric_limits<float>::epsilon()) {
     c1 = std::numeric_limits<float>::epsilon();
-   }
-  if (fabs(c2) < std::numeric_limits<float>::epsilon() ) {
+  }
+  if (fabs(c2) < std::numeric_limits<float>::epsilon()) {
     c2 = std::numeric_limits<float>::epsilon();
   }
-  if (fabs(c3) < std::numeric_limits<float>::epsilon() ) {
-    c3= std::numeric_limits<float>::epsilon();
+  if (fabs(c3) < std::numeric_limits<float>::epsilon()) {
+    c3 = std::numeric_limits<float>::epsilon();
   }
 
   // compute the Jacobian matrix
@@ -81,8 +81,7 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
 }
 
 
-VectorXd Tools::cartesianToPolar(const VectorXd& cart_state){
-
+VectorXd Tools::cartesianToPolar(const VectorXd& cart_state) {
   // Getting cartesian state
   float px = cart_state(0);
   float py = cart_state(1);
@@ -91,10 +90,10 @@ VectorXd Tools::cartesianToPolar(const VectorXd& cart_state){
 
   // Computing rho, phi
   float rho = sqrt(px*px+py*py);
-  float phi = atan2(py,px);
+  float phi = atan2(py, px);
 
   // Check division by zero and compute rho_dot
-  if(rho<std::numeric_limits<float>::epsilon()){
+  if (rho<std::numeric_limits<float>::epsilon()) {
     rho = std::numeric_limits<float>::epsilon();
   }
   float rho_p = (px*vx+py*vy)/rho;
@@ -106,23 +105,20 @@ VectorXd Tools::cartesianToPolar(const VectorXd& cart_state){
   return hx;
 }
 
-float Tools::normalize_radians(float in_rad){
-
+float Tools::normalize_radians(float in_rad) {
   float res = in_rad;
-  if(res > M_PI){
+  if (res > M_PI) {
     // While input radians num is over pi, subtract 2*pi
-    while(res > M_PI){
+    while (res > M_PI) {
       res -= 2*M_PI;
     }
-  }
-  else if(res < -M_PI){
+  } else if (res < -M_PI) {
     // While input radians num is under -pi, add 2*pi
-    while(res <- M_PI){
+    while (res <- M_PI) {
       res += 2*M_PI;
     }
   }
 
   return res;
-
 }
 

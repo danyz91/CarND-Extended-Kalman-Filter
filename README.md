@@ -1,3 +1,11 @@
+[//]: # (Image References)
+
+[image1]: ./img/last_curve_radar.png "Last Curve Radar"
+[image2]: ./img/last_curve_laser.png "Last Curve Laser"
+[image3]: ./img/last_curve_both.png "Last Curve Both Sensors"
+[image4]: ./img/both_d1.png "Final Path Dataset 1"
+[image5]: ./img/both_d2.png "Final Path Dataset 2"
+
 # Extended Kalman Filter Project Starter Code
 Self-Driving Car Engineer Nanodegree Program
 
@@ -15,11 +23,7 @@ Once the install for uWebSocketIO is complete, the main program can be built and
 4. make
 5. ./ExtendedKF
 
-Tips for setting up your environment can be found in the classroom lesson for this project.
-
-Note that the programs that need to be written to accomplish the project are src/FusionEKF.cpp, src/FusionEKF.h, kalman_filter.cpp, kalman_filter.h, tools.cpp, and tools.h
-
-The program main.cpp has already been filled out, but feel free to modify it.
+## Main Simulation Protocol
 
 Here is the main protocol that main.cpp uses for uWebSocketIO in communicating with the simulator.
 
@@ -66,69 +70,84 @@ Here is the main protocol that main.cpp uses for uWebSocketIO in communicating w
    * On windows, you may need to run: `cmake .. -G "Unix Makefiles" && make`
 4. Run it: `./ExtendedKF `
 
-## Editor Settings
-
-We've purposefully kept editor configuration files out of this repo in order to
-keep it as simple and environment agnostic as possible. However, we recommend
-using the following settings:
-
-* indent using spaces
-* set tab width to 2 spaces (keeps the matrices in source code aligned)
-
 ## Code Style
 
 Please (do your best to) stick to [Google's C++ style guide](https://google.github.io/styleguide/cppguide.html).
 
-## Generating Additional Data
 
-This is optional!
 
-If you'd like to generate your own radar and lidar data, see the
-[utilities repo](https://github.com/udacity/CarND-Mercedes-SF-Utilities) for
-Matlab scripts that can generate additional data.
+## Results
 
-## Project Instructions and Rubric
 
-Note: regardless of the changes you make, your project must be buildable using
-cmake and make!
 
-More information is only accessible by people who are already enrolled in Term 2 (three-term version) or Term 1 (two-term version)
-of CarND. If you are enrolled, see the Project Resources page in the classroom
-for instructions and the project rubric.
+## Baseline
 
-## Hints and Tips!
+Param | Threshold
+----  | -----
+**RMSE x** | **`0.11`** 
+**RMSE y** | **`0.11`**
+**RMSE vx** | **`0.52`** 
+**RMSE vy** | **`0.52`**
 
-* You don't have to follow this directory structure, but if you do, your work
-  will span all of the .cpp files here. Keep an eye out for TODOs.
-* Students have reported rapid expansion of log files when using the term 2 simulator.  This appears to be associated with not being connected to uWebSockets.  If this does occur,  please make sure you are conneted to uWebSockets. The following workaround may also be effective at preventing large log files.
+## Only Laser
 
-    + create an empty log file
-    + remove write permissions so that the simulator can't write to log
- * Please note that the ```Eigen``` library does not initialize ```VectorXd``` or ```MatrixXd``` objects with zeros upon creation.
+Param| Dataset 1 | Dataset 2
+-----|----- | -----
+RMSE x | `0.1473` ![#1589F0](https://placehold.it/15/FFA500/000000?text=+) | `0.1170` ![#1589F0](https://placehold.it/15/FFA500/000000?text=+)
+RMSE y | `0.1153` ![#1589F0](https://placehold.it/15/FFA500/000000?text=+) | `0.1262` ![#1589F0](https://placehold.it/15/FFA500/000000?text=+)
+RMSE vx | `0.6383` ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) | `0.6501` ![#f03c15](https://placehold.it/15/f03c15/000000?text=+)
+RMSE vy | `0.5346` ![#1589F0](https://placehold.it/15/FFA500/000000?text=+) | `0.6108` ![#f03c15](https://placehold.it/15/f03c15/000000?text=+)
 
-## Call for IDE Profiles Pull Requests
+## Only Radar
 
-Help your fellow students!
+Param| Dataset 1 | Dataset 2
+-----|----- | -----
+RMSE x | `0.2302` ![#f03c15](https://placehold.it/15/f03c15/000000?text=+)| `0.2693` ![#f03c15](https://placehold.it/15/f03c15/000000?text=+)
+RMSE y | `0.3464` ![#f03c15](https://placehold.it/15/f03c15/000000?text=+)| `0.3848` ![#f03c15](https://placehold.it/15/f03c15/000000?text=+)
+RMSE vx | `0.5835` ![#f03c15](https://placehold.it/15/f03c15/000000?text=+)| `0.6534` ![#f03c15](https://placehold.it/15/f03c15/000000?text=+)
+RMSE vy | `0.8040` ![#f03c15](https://placehold.it/15/f03c15/000000?text=+)| `0.8638` ![#f03c15](https://placehold.it/15/f03c15/000000?text=+)
 
-We decided to create Makefiles with cmake to keep this project as platform
-agnostic as possible. Similarly, we omitted IDE profiles in order to ensure
-that students don't feel pressured to use one IDE or another.
+## Both Sensors
 
-However! We'd love to help people get up and running with their IDEs of choice.
-If you've created a profile for an IDE that you think other students would
-appreciate, we'd love to have you add the requisite profile files and
-instructions to ide_profiles/. For example if you wanted to add a VS Code
-profile, you'd add:
+Param| Dataset 1 | Dataset 2
+-----|----- | -----
+RMSE x | `0.0973` ![#00A800](https://placehold.it/15/00A800/000000?text=+) | `0.0726` ![#00A800](https://placehold.it/15/00A800/000000?text=+)
+RMSE y | `0.0855` ![#00A800](https://placehold.it/15/00A800/000000?text=+) | `0.0967` ![#00A800](https://placehold.it/15/00A800/000000?text=+)
+RMSE vx | `0.4513` ![#00A800](https://placehold.it/15/00A800/000000?text=+)| `0.4579` ![#00A800](https://placehold.it/15/00A800/000000?text=+)
+RMSE vy | `0.4399` ![#00A800](https://placehold.it/15/00A800/000000?text=+) | `0.4966` ![#00A800](https://placehold.it/15/00A800/000000?text=+)
 
-* /ide_profiles/vscode/.vscode
-* /ide_profiles/vscode/README.md
+## Cpplint
+```bash
+cpplint --filter=-build/include_subdir,-runtime/int FusionEKF.cpp kalman_filter.cpp tools.cpp 
+```
 
-The README should explain what the profile does, how to take advantage of it,
-and how to install it.
+* `Use int16/int64/etc, rather than the C type long  [runtime/int] [4]`
+* `Include the directory when naming .h files  [build/include_subdir] [4]`
 
-Regardless of the IDE used, every submitted project must
-still be compilable with cmake and make.
 
-## How to write a README
-A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
+## Final Path Dataset 1
+![alt text][image4]
+
+## Final Path Dataset 2
+![alt text][image5]
+
+## Last Curve Detail
+
+### Radar
+
+![alt text][image1]
+
+### Laser
+
+![alt text][image2]
+
+### Both
+
+![alt text][image3]
+
+
+
+
+
+
 

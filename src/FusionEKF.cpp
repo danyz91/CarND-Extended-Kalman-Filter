@@ -1,3 +1,5 @@
+// Copyright 2020 d.romano991@gmail.com
+
 #include "FusionEKF.h"
 #include <iostream>
 #include "Eigen/Dense"
@@ -13,6 +15,8 @@ using std::vector;
  * Constructor.
  */
 FusionEKF::FusionEKF() {
+  mode = BOTH_SENSORS;
+
   is_initialized_ = false;
 
   previous_timestamp_ = 0;
@@ -48,15 +52,14 @@ FusionEKF::FusionEKF() {
         0, 0, 1, 0,
         0, 0, 0, 1;
 
-  Q_ << MatrixXd::Zero(4,4);
+  Q_ << MatrixXd::Zero(4, 4);
 
 
-  P_ << MatrixXd::Zero(4,4);
+  P_ << MatrixXd::Zero(4, 4);
 
   // Noise given
   noise_ax = 9;
   noise_ay = 9;
-
 }
 
 /**
@@ -69,7 +72,6 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
    * Initialization
    */
   if (!is_initialized_) {
-
     // first measurement
     VectorXd first_measurement = measurement_pack.raw_measurements_;
 
@@ -82,12 +84,12 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
           0, 0, 0, 1000;
 
     if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
-      std::cout<<"EKF init with RADAR measurement"<<std::endl;
+      std::cout << "EKF init with RADAR measurement" << std::endl;
       float init_rho = first_measurement[0];
       float init_phi = Tools::normalize_radians(first_measurement[1]);
       float init_rho_dot = first_measurement[2];
 
-      //Polar to cartesian conversion.
+      // Polar to cartesian conversion.
       float x_comp = init_rho*cos(init_phi);
       float y_comp = init_rho*sin(init_phi);
 
@@ -99,9 +101,8 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
       // Initialize EKF with Radar Info
       ekf_.Init(x_, P_, F_, Hj_, R_radar_, Q_);
 
-    }
-    else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
-      std::cout<<"EKF init with LASER measurement"<<std::endl;
+    } else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
+      std::cout << "EKF init with LASER measurement" << std::endl;
       float init_x = first_measurement[0];
       float init_y = first_measurement[1];
 
@@ -166,17 +167,19 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
     Hj_ = tools.CalculateJacobian(ekf_.x_);
     ekf_.H_ = Hj_;
     ekf_.R_ = R_radar_;
-    ekf_.UpdateEKF(measurement_pack.raw_measurements_);
+    if (mode == ONLY_RADAR || mode == BOTH_SENSORS) {
+      ekf_.UpdateEKF(measurement_pack.raw_measurements_);
+    }
 
   } else {
     // Laser updates
     // Measurement update
     ekf_.H_ = H_laser_;
     ekf_.R_ = R_laser_;
-    ekf_.Update(measurement_pack.raw_measurements_);
-
+    if (mode == ONLY_LASER || mode == BOTH_SENSORS) {
+        ekf_.Update(measurement_pack.raw_measurements_);
+    }
   }
-
   // print the output
   cout << "x_ = " << ekf_.x_ << endl;
   cout << "P_ = " << ekf_.P_ << endl;

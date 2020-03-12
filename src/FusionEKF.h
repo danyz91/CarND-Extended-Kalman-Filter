@@ -1,3 +1,5 @@
+// Copyright 2020 d.romano991@gmail.com
+
 #ifndef FusionEKF_H_
 #define FusionEKF_H_
 
@@ -8,6 +10,10 @@
 #include "kalman_filter.h"
 #include "measurement_package.h"
 #include "tools.h"
+
+#define BOTH_SENSORS 0
+#define ONLY_RADAR 1
+#define ONLY_LASER 2
 
 class FusionEKF {
  public:
@@ -53,6 +59,9 @@ class FusionEKF {
   Eigen::MatrixXd F_;
   Eigen::MatrixXd Q_;
   Eigen::MatrixXd P_;
+
+  // mode for simulating both sensors, only radar, only laser
+  int mode;
 };
 
 #endif // FusionEKF_H_
