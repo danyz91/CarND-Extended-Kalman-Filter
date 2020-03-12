@@ -97,6 +97,8 @@ If a measurement come from **Laser**,
 * H matrix is set to `H_laser_`
 * Measurement covariance matrix R is set to `R_laser_`
 
+#### Kalman Filter Equations
+
 Code containing Extended Kalman Filter equations is contained in [kalman_filter.cpp file](./src/kalman_filter.cpp) whitin the functions:
 *  `predict()` : Predict the state. **line 27** 
 *  `update()` : Update the state by using Kalman Filter equations **line 36**
@@ -266,7 +268,7 @@ The result is **even improved** embodying also radar measurements.
 
 ## Known Issues and Open Points
 
-* Generating more data, 
+* Generating more data 
   
   It would be better to have more dataset in order to evaluate better the filter developed. A good dataset for this task could be a track where you have in some segments only one sensor at a time and then other segments with the two sensors combined in order to see how the filter react in such conditions
 
