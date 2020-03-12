@@ -5,7 +5,6 @@
 [image3]: ./img/last_curve_both.png "Last Curve Both Sensors"
 [image4]: ./img/both_d1.png "Final Path Dataset 1"
 [image5]: ./img/both_d2.png "Final Path Dataset 2"
-[image6]: ./img/ekf_scheme.png "EKF scheme"
 
 # Extended Kalman Filter Project 
 [![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
@@ -68,9 +67,13 @@ Here is the main protocol that main.cpp uses for uWebSocketIO in communicating w
 
 #### General Processing Flow
 
-The algorithm used to compute Extended Kalman Filter is shown in the image below.
+The algorithm used to compute Extended Kalman Filter is summarized below:
 
-  ![alt text][image6]
+1. Get sensor measurement
+2. If it is the first measurement, init the EKF matrices and state and skip to step 5, otherwise **predict**
+3. If the measurement comes from **Radar** update using EKF equations
+4. If the measurement comes from **Laser** update using standard Kalman equations
+5. Get new sensors measurement and go to step 2
 
 #### Handling first measurements properly
 
