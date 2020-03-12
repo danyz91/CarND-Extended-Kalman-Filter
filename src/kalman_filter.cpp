@@ -24,7 +24,7 @@ void KalmanFilter::Init(VectorXd &x_in, MatrixXd &P_in, MatrixXd &F_in,
 
 void KalmanFilter::Predict() {
   /**
-   * TODO: predict the state
+   * Predict the state
    */
   x_ = F_ * x_;
   MatrixXd Ft = F_.transpose();
@@ -35,7 +35,7 @@ void KalmanFilter::Predict() {
 void KalmanFilter::Update(const VectorXd &z) {
 
   /**
-   * TODO: update the state by using Kalman Filter equations
+   * Update the state by using Kalman Filter equations
    */
   VectorXd z_pred = H_ * x_;
   VectorXd y = z - z_pred;
@@ -59,17 +59,15 @@ void KalmanFilter::Update(const VectorXd &z) {
 
 void KalmanFilter::UpdateEKF(const VectorXd &z) {
   /**
-   * TODO: update the state by using Extended Kalman Filter equations
+   * Update the state by using Extended Kalman Filter equations
    */
 
   VectorXd hx = Tools::cartesianToPolar(x_);
 
-  std::cout<<"rho : "<<hx(0)<<std::endl;
-  std::cout<<"phi : "<<hx(1)<<std::endl;
-  std::cout<<"rho dot: "<<hx(2)<<std::endl;
-
   VectorXd y = z - hx;
-  //y(1) = Tools::normalize_radians(y(1));
+  // Normalizing Angles
+  y(1) = Tools::normalize_radians(y(1));
+
   MatrixXd Ht = H_.transpose();
   MatrixXd S = H_ * P_ * Ht + R_;
   MatrixXd Si = S.inverse();

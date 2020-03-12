@@ -16,7 +16,7 @@ VectorXd Tools::CalculateRMSE(const vector<VectorXd> &estimations,
   VectorXd rmse(4);
   rmse << 0,0,0,0;
 
-  // check the validity of the following inputs:
+  // Checking the validity of the following inputs:
   //  * the estimation vector size should not be zero
   //  * the estimation vector size should equal ground truth vector size
   if (estimations.size() != ground_truth.size()
@@ -50,22 +50,26 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
   MatrixXd Hj(3,4);
   Hj = MatrixXd::Zero(3,4);
 
-  // recover state parameters
+  // Recover state parameters
   float px = x_state(0);
   float py = x_state(1);
   float vx = x_state(2);
   float vy = x_state(3);
 
-  // pre-compute a set of terms to avoid repeated calculation
+  // Pre-compute a set of terms to avoid repeated calculation
   float c1 = px*px+py*py;
   float c2 = sqrt(c1);
   float c3 = (c1*c2);
 
-
-  // check division by zero
-  if (fabs(c1) < 0.0001) {
-    std::cout << "CalculateJacobian () - Error - Division by Zero" << std::endl;
-    return Hj;
+  // check division by zero of all denominators in Hj formula
+  if (fabs(c1) < std::numeric_limits<float>::epsilon() ) {
+    c1 = std::numeric_limits<float>::epsilon();
+   }
+  if (fabs(c2) < std::numeric_limits<float>::epsilon() ) {
+    c2 = std::numeric_limits<float>::epsilon();
+  }
+  if (fabs(c3) < std::numeric_limits<float>::epsilon() ) {
+    c3= std::numeric_limits<float>::epsilon();
   }
 
   // compute the Jacobian matrix
@@ -79,40 +83,42 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
 
 VectorXd Tools::cartesianToPolar(const VectorXd& cart_state){
 
+  // Getting cartesian state
   float px = cart_state(0);
   float py = cart_state(1);
   float vx = cart_state(2);
   float vy = cart_state(3);
 
+  // Computing rho, phi
   float rho = sqrt(px*px+py*py);
+  float phi = atan2(py,px);
 
-  if(px < std::numeric_limits<float>::epsilon()){
-    px = std::numeric_limits<float>::epsilon();
-  }
-  if(rho < std::numeric_limits<float>::epsilon()){
+  // Check division by zero and compute rho_dot
+  if(rho<std::numeric_limits<float>::epsilon()){
     rho = std::numeric_limits<float>::epsilon();
   }
-
-  float phi = Tools::normalize_radians(atan2(py,px));
   float rho_p = (px*vx+py*vy)/rho;
 
+  // Populating h(x)
   VectorXd hx(3);
   hx << rho, phi, rho_p;
+
   return hx;
 }
 
 float Tools::normalize_radians(float in_rad){
 
   float res = in_rad;
-
   if(res > M_PI){
+    // While input radians num is over pi, subtract 2*pi
     while(res > M_PI){
-      res -= M_PI;
+      res -= 2*M_PI;
     }
   }
-  else if(res <- M_PI){
+  else if(res < -M_PI){
+    // While input radians num is under -pi, add 2*pi
     while(res <- M_PI){
-      res += M_PI;
+      res += 2*M_PI;
     }
   }
 
