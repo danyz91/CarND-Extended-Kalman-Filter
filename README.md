@@ -73,7 +73,7 @@ The algorithm used to compute Extended Kalman Filter is summarized below:
 2. If it is the first measurement, init the EKF matrices and state and skip to step 5, otherwise **predict**
 3. If the measurement comes from **Radar** update using EKF equations
 4. If the measurement comes from **Laser** update using standard Kalman equations
-5. Get new sensors measurement and go to step 2
+5. Go to step 1
 
 #### Handling first measurements properly
 
