@@ -1,5 +1,3 @@
-// Copyright 2020 d.romano991@gmail.com
-
 #ifndef FusionEKF_H_
 #define FusionEKF_H_
 
