@@ -1,5 +1,3 @@
-// Copyright 2020 d.romano991@gmail.com
-
 #include "kalman_filter.h"
 
 using Eigen::MatrixXd;
