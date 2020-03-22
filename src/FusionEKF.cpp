@@ -1,5 +1,3 @@
-// Copyright 2020 d.romano991@gmail.com
-
 #include "FusionEKF.h"
 #include <iostream>
 #include "Eigen/Dense"
